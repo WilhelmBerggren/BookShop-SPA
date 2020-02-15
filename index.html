@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Book store</title>
+        <link rel="stylesheet" href="bulma.min.css">
+        <link rel="stylesheet" href="index.css">
+    </head>
+    <body>
+        <nav class="navbar" role="navigation" aria-label="main navigation">
+            <div class="navbar-brand">
+                <div class="navbar-item" href="#">
+                    <a class="title">Book Store</a>
+                </div>
+            </div>
+        </nav>
+        <section class="section">
+            <form id="bookForm">
+                <input type="text" name="author" value="asdffdsa">
+                <input type="text" name="title" value=";lkjfasdf">
+                <input type="submit">
+            </form>
+        </section>
+        <section class="section">
+            <div class="container">
+                <div class="field">
+                    <label class="label">
+                            Title
+                    </label>
+                    <div class="control">
+                        <input class="input is-dark" type="text" name="title" placeholder="My title">
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">
+                        Author
+                    </label>
+                    <div class="control">
+                        <input class="input is-dark" type="text" name="author" placeholder="Me Author">
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">
+                        Submit
+                    </label>
+                    <div class="control">
+                        <button class="button" type="submit">
+                            Submit
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="section">
+            <div id="books" class="tile is-ancestor"></div>
+        </section>
+    </body>
+    <script src="index.js"></script>
+</html>
