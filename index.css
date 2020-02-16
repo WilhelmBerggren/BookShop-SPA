@@ -31,8 +31,7 @@ nav > * {
 }
 
 .row {
-    width: 100%;
-    display: block;
+    display: inline-block;
 }
 
 input, button, select, label {
