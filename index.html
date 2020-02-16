@@ -8,53 +8,22 @@
         <link rel="stylesheet" href="index.css">
     </head>
     <body>
-        <nav class="navbar" role="navigation" aria-label="main navigation">
-            <div class="navbar-brand">
-                <div class="navbar-item" href="#">
-                    <a class="title">Book Store</a>
-                </div>
-            </div>
-        </nav>
         <section class="section">
             <form id="bookForm">
-                <input type="text" name="author" value="asdffdsa">
-                <input type="text" name="title" value=";lkjfasdf">
+                Insert: <input type="radio" name="op" value="insert" id="insert"><br>
+                Update: <input type="radio" name="op" value="update" id="update"><br>
+                Delete: <input type="radio" name="op" value="delete" id="delete"><br>
+                ID: <input type="text" name="id" id="id"><br>
+                Author: <input type="text" name="author" id="author"><br>
+                Title: <input type="text" name="title" id="title"><br>
                 <input type="submit">
             </form>
         </section>
-        <section class="section">
-            <div class="container">
-                <div class="field">
-                    <label class="label">
-                            Title
-                    </label>
-                    <div class="control">
-                        <input class="input is-dark" type="text" name="title" placeholder="My title">
-                    </div>
-                </div>
-                <div class="field">
-                    <label class="label">
-                        Author
-                    </label>
-                    <div class="control">
-                        <input class="input is-dark" type="text" name="author" placeholder="Me Author">
-                    </div>
-                </div>
-                <div class="field">
-                    <label class="label">
-                        Submit
-                    </label>
-                    <div class="control">
-                        <button class="button" type="submit">
-                            Submit
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </section>
+        Attempts: <p id="attempts">0</p>
+        <button onclick="displayBooks()">refresh</button>
         <section class="section">
             <div id="books" class="tile is-ancestor"></div>
         </section>
     </body>
-    <script src="index.js"></script>
+    <script src="app.js"></script>
 </html>

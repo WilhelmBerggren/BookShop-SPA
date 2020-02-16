@@ -1,0 +1,23 @@
+#delete:checked ~ #author {
+    display: none;
+}
+
+#delete:checked ~ #title {
+    display: none;
+}
+
+#delete:checked ~ #id {
+    display: inline-block;
+}
+
+#insert:checked ~ #id {
+    display: none;
+}
+
+#insert:checked ~ #author, #title {
+    display: inline-block;
+}
+
+#update:checked ~ #author, #title, #id {
+    display: inline-block;
+}
