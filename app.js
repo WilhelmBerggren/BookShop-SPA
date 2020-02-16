@@ -3,6 +3,7 @@
 handleOpChange();
 displayBooks();
 
+document.querySelector('#filter').addEventListener('input', filterBooks);
 document.querySelector('#op').addEventListener('change', handleOpChange);
 document.querySelector('#bookForm').addEventListener('submit', submitForm);
 
@@ -28,9 +29,17 @@ async function submitForm(event) {
     displayBooks();
 }
 
-async function displayBooks() {
+async function filterBooks(event) {
+    await displayBooks((book) => {
+        let keys = Object.values(book);
+        let some = keys.some((val) => (''+val).includes(event.target.value));
+        return some;
+    });
+}
+
+async function displayBooks(filter = (b) => b) {
     await myFetch({op: 'select'}).then(res => {
-        document.querySelector('#books').innerHTML = res.data.map((book) => `
+        document.querySelector('#books').innerHTML = res.data.filter(filter).map((book) => `
             <div class='card'>
                 <p>Title: ${book.title}</p>
                 <p>Author: ${book.author}</p>
@@ -52,7 +61,7 @@ async function persistentFetch(url, n = 10) {
     if(n <= 0) return {data: []};
     let json = await fetch(url).then(res => res.json());
     if (json.status == "success") {
-        document.querySelector('#attempts').innerHTML += `<p>${11 - n}</p>`;
+        document.querySelector('#attempts').innerHTML += `<p>Success: ${11 - n}</p>`;
         return json;
     } 
     else return persistentFetch(url, n-1);

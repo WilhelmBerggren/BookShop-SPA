@@ -21,9 +21,9 @@
                     <div class="row">
                         <h3> Action </h3>
                         <select name="op" id="op">
-                            <option name="op" value="insert" selected>Insert</option>
-                            <option name="op" value="update">Update</option>
-                            <option name="op" value="delete">Delete</option>
+                            <option value="insert" selected>Insert</option>
+                            <option value="update">Update</option>
+                            <option value="delete">Delete</option>
                         </select>
                     </div>
                     <div class="row" id="id-row">
@@ -60,18 +60,19 @@
                 <div class="card">
                     <h1> Books </h1>
                     <button onclick="displayBooks()">Refresh</button>
+                    <input type="text" id="filter" placeholder="filter">
                     <div class="cards" id="books">
                     </div>
                 </div>
             </section>
-        <section class="cards">
+        <div class="cards">
             <div class="card">
                 Created by <a href="https://github.com/wilhelmberggren">Wilhelm Berggren</a>
             </div>
             <div class="card">
                 <a href="https://github.com/wilhelmberggren/BookShop-SPA">Source</a>
             </div>
-        </section>
+        </div>
         <script src="app.js"></script>
     </body>
 </html>
