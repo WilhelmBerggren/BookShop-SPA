@@ -1,8 +1,28 @@
 'use strict';
 
+handleOpChange();
 displayBooks();
 
-async function submitForm (event) {
+document.querySelector('#op').addEventListener('change', handleOpChange);
+document.querySelector('#bookForm').addEventListener('submit', submitForm);
+
+function handleOpChange() {
+    const fields = {
+        id: '#id-row', 
+        title: '#title-row', 
+        author: '#author-row'
+    }
+    const opHides = {
+        insert: [fields.id], 
+        update: [], 
+        delete: [fields.title, fields.author]
+    }
+    const setDisplay = (id, value) => document.querySelector(id).style.display = value;
+    Object.values(fields).map((row) => setDisplay(row, ''));
+    opHides[document.querySelector('#op').value].map((row) => setDisplay(row, 'none'));
+}
+
+async function submitForm(event) {
     event.preventDefault();
     await myFetch(Object.fromEntries(new FormData(event.target).entries()));
     displayBooks();
