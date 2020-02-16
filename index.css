@@ -1,23 +1,42 @@
-#delete:checked ~ #author {
-    display: none;
+body {
+    font-family: Helvetica, Arial, sans-serif;
+    margin: 0;
+    padding: 0;
 }
 
-#delete:checked ~ #title {
-    display: none;
+nav {
+    margin: 0;
+    padding: .5em;
 }
 
-#delete:checked ~ #id {
-    display: inline-block;
+nav > * {
+    color: inherit;
+    font-size: 3em;
+    font-style: bold;
+    font-weight: bold;
+    text-decoration: none;
 }
 
-#insert:checked ~ #id {
-    display: none;
+.cards {
+    display: flex;
+    flex-wrap: wrap;
 }
 
-#insert:checked ~ #author, #title {
-    display: inline-block;
+.card {
+    flex: 0 1 auto;
+    margin: 1em;
+    padding: 1em;
+    border-radius: .5em;
+    box-shadow: 0 5px 9px 0 rgba(0, 0, 0, 0.35);
 }
 
-#update:checked ~ #author, #title, #id {
-    display: inline-block;
+.row {
+    width: 100%;
+    display: block;
+}
+
+input, button, select, label {
+    margin: 0.5em;
+    padding: 0.5em;
+    border-radius: 0.5em;
 }

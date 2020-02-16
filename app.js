@@ -10,9 +10,14 @@ async function submitForm (event) {
 
 async function displayBooks() {
     await myFetch({op: 'select'}).then(res => {
-        document.querySelector('#books').innerHTML = res.data.reduce((acc, book) => 
-            acc + `<div class='box'><p>${book.author}</p><p>${book.title}</p><p>${book.id}</p></div>`
-        , '');
+        document.querySelector('#books').innerHTML = res.data.map((book) => `
+            <div class='card'>
+                <p>Title: ${book.title}</p>
+                <p>Author: ${book.author}</p>
+                <p>ID: ${book.id}</p>
+                <p>Updated: ${book.updated}</p>
+            </div>
+        `).join('');
     });
 }
 
@@ -30,11 +35,13 @@ async function persistentFetch(url, n = 10) {
     return (json.status == "success") ? json : persistentFetch(url, n-1);
 }
 
-async function getKey() {
-    if(window.localStorage.getItem('key') == null) {
+async function getKey(refreshKey = false) {
+    if(window.localStorage.getItem('key') == null || refreshKey == true) {
         await myFetch({'requestKey': true}).then((k) => 
             window.localStorage.setItem('key', k.key)
         );
     }    
-    return window.localStorage.getItem('key');
+    let key = window.localStorage.getItem('key');
+    document.querySelector('#key').innerHTML = key;
+    return key;
 }

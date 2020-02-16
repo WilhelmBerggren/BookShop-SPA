@@ -3,26 +3,74 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Book store</title>
-        <link rel="stylesheet" href="bulma.min.css">
+        <title>Book Database</title>
         <link rel="stylesheet" href="index.css">
     </head>
-    <body>
-        <section class="section">
-            <form id="bookForm" onsubmit="submitForm(event)">
-                <p> Insert: <input id="insert"  type="radio" name="op" value="insert"></p>
-                <p> Update: <input id="update"  type="radio" name="op" value="update"></p>
-                <p> Delete: <input id="delete"  type="radio" name="op" value="delete" id="delete"></p>
-                <p> ID:     <input id="id"      type="text"  name="id"></p>
-                <p> Author: <input id="author"  type="text"  name="author"></p>
-                <p> Title:  <input id="title"   type="text"  name="title"></p>
-                <p><input type="submit"></p>
-            </form>
-        </section>
-        Attempts: <p id="attempts">0</p>
-        <button onclick="displayBooks()">refresh</button>
-        <section class="section">
-            <div id="books" class="tile is-ancestor"></div>
+    <body class="card">
+        <nav>
+            <a href="#">Book Database</a>
+        </nav>
+        <div class="cards">
+            <section class="cards" id="formWrapper">
+                <div class="card">
+                    <h1> Form </h1>
+                    <form id="bookForm" class="cards" onsubmit="submitForm(event)">
+                        <div class="card" id="op-card">
+                            <h3> Action </h3>
+                            <select name="op" id="op">
+                                <option name="op" value="insert" selected>Insert</option>
+                                <option name="op" value="update">Update</option>
+                                <option name="op" value="delete">Delete</option>
+                            </select>
+                        </div>
+                        <div class="card" id="id-card">
+                            <h3> ID </h3>
+                            <input id="id" type="text" name="id" placeholder="id">
+                        </div>
+                        <div class="card" id="author-card">
+                            <h3> Author </h3>
+                            <input id="author" type="text" name="author" placeholder="author">
+                        </div>
+                        <div class="card" id="title-card">
+                            <h3> Title </h3>
+                            <input id="title" type="text" name="title" placeholder="title">
+                        </div>
+                        <div class="card" id="submit-card">
+                            <h3> Submit </h3>
+                            <input type="submit">
+                        </div>
+                    </form>
+                </div>
+            </section>
+            <section class="cards">
+                <div class="card cards">
+                    <div class="card">
+                        <h1> Attempts </h1>
+                        <p id="attempts">0</p>
+                    </div>
+                    <div class="card">
+                        <h1> Key </h1>
+                        <p id="key">null</p>
+                        <button onclick="getKey(true)">Refresh</button>
+                    </div>
+                </div>
+            </section>
+            <section class="cards">
+                <div class="card">
+                    <h1> Books </h1>
+                    <button onclick="displayBooks()">Refresh</button>
+                    <div class="cards" id="books">
+                    </div>
+                </div>
+            </section>
+        </div>
+        <section class="cards">
+            <div class="card">
+                Created by <a href="https://github.com/wilhelmberggren">Wilhelm Berggren</a>
+            </div>
+            <div class="card">
+                <a href="https://github.com/wilhelmberggren/BookShop-SPA">Source</a>
+            </div>
         </section>
     </body>
     <script src="app.js"></script>
