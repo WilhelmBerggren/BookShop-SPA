@@ -9,14 +9,14 @@
     </head>
     <body>
         <section class="section">
-            <form id="bookForm">
-                Insert: <input type="radio" name="op" value="insert" id="insert"><br>
-                Update: <input type="radio" name="op" value="update" id="update"><br>
-                Delete: <input type="radio" name="op" value="delete" id="delete"><br>
-                ID: <input type="text" name="id" id="id"><br>
-                Author: <input type="text" name="author" id="author"><br>
-                Title: <input type="text" name="title" id="title"><br>
-                <input type="submit">
+            <form id="bookForm" onsubmit="submitForm(event)">
+                <p> Insert: <input id="insert"  type="radio" name="op" value="insert"></p>
+                <p> Update: <input id="update"  type="radio" name="op" value="update"></p>
+                <p> Delete: <input id="delete"  type="radio" name="op" value="delete" id="delete"></p>
+                <p> ID:     <input id="id"      type="text"  name="id"></p>
+                <p> Author: <input id="author"  type="text"  name="author"></p>
+                <p> Title:  <input id="title"   type="text"  name="title"></p>
+                <p><input type="submit"></p>
             </form>
         </section>
         Attempts: <p id="attempts">0</p>

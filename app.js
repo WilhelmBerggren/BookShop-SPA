@@ -1,60 +1,40 @@
 'use strict';
 
-async function getKey() {
-    if(window.localStorage.getItem('key') == 'null') {
-        await persistentFetch('?requestKey').then((k) => {
-            window.localStorage.setItem('key', k.key);
-            return k.key;
-        });
-    }
-    return window.localStorage.getItem('key');
-}
-
-const bookForm = document.querySelector('#bookForm');
-bookForm.onsubmit = async (e) => {
-    e.preventDefault();
-
-    let op = bookForm.op.value;
-    let id = bookForm.id.value;
-    let title = bookForm.title.value;
-    let author = bookForm.author.value;
-    
-    persistentFetch(`?key=${await getKey()}&op=${op}&title=${title}&author=${author}&id=${id}`);
-}
-
-async function persistentFetch(queryParams) {
-    let jsonRes = {status: "error"}
-    let attempts = 0;
-    while(jsonRes.status !== "success") {
-        attempts++;
-        const response = await fetch('https://www.forverkliga.se/JavaScript/api/crud.php' + queryParams);
-        jsonRes = await response.json();
-    }
-    document.querySelector('#attempts').innerHTML = attempts;
-    return jsonRes;
-}
-
 displayBooks();
 
-async function displayBooks() {
+async function submitForm (event) {
+    event.preventDefault();
+    await myFetch(Object.fromEntries(new FormData(event.target).entries()));
+    displayBooks();
+}
 
-    let bookTemplate = (book) => `
-        <div class="tile is-child box">
-            <p> ${book.author} </p>
-            <p class="title"> ${book.title} </p>
-            <p> ${book.updated} </p>
-            <p> ${book.id} </p>
-        </div>
-    `
-    await persistentFetch(`?key=${await getKey()}&op=select`).then(res => {
-        if(res.status == "success") {
-            let bookSection = document.querySelector('#books');
-            bookSection.innerHTML = '';
-            for(let book of res.data) {
-                let d = document.createElement('div');
-                d.innerHTML = bookTemplate(book);
-                bookSection.appendChild(d);
-            }
-        }
+async function displayBooks() {
+    await myFetch({op: 'select'}).then(res => {
+        document.querySelector('#books').innerHTML = res.data.reduce((acc, book) => 
+            acc + `<div class='box'><p>${book.author}</p><p>${book.title}</p><p>${book.id}</p></div>`
+        , '');
     });
+}
+
+async function myFetch(params) {
+    params.key = await getKey();
+    let url = new URL('https://www.forverkliga.se/JavaScript/api/crud.php');
+    Object.entries(params).forEach(([key, value]) => url.searchParams.append(key, value));
+    return await persistentFetch(url);
+}
+
+async function persistentFetch(url, n = 10) {
+    document.querySelector('#attempts').innerHTML = 11 - n;
+    if(n <= 0) return {};
+    let json = await fetch(url).then(res => res.json());
+    return (json.status == "success") ? json : persistentFetch(url, n-1);
+}
+
+async function getKey() {
+    if(window.localStorage.getItem('key') == null) {
+        await myFetch({'requestKey': true}).then((k) => 
+            window.localStorage.setItem('key', k.key)
+        );
+    }    
+    return window.localStorage.getItem('key');
 }
