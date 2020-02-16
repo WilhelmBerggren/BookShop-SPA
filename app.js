@@ -5,7 +5,6 @@ displayBooks();
 async function submitForm (event) {
     event.preventDefault();
     await myFetch(Object.fromEntries(new FormData(event.target).entries()));
-    displayBooks();
 }
 
 async function displayBooks() {
@@ -30,16 +29,13 @@ async function myFetch(params, useKey = true) {
 
 async function persistentFetch(url, n = 10) {
     document.querySelector('#attempts').innerHTML = 11 - n;
-    if(n <= 0) return {};
-    let json = await fetch(url)
-        .then(res => res.json())
-        .catch(e => {throw e});
+    if(n <= 0) return {data: []};
+    let json = await fetch(url).then(res => res.json());
     return (json.status == "success") ? json : persistentFetch(url, n-1);
 }
 
 async function getKey(refreshKey = false) {
     if(window.localStorage.getItem('key') == null || refreshKey == true) {
-        console.log("Getting new key...");
         await myFetch({'requestKey': true}, false).then((k) => 
             window.localStorage.setItem('key', k.key)
         );
