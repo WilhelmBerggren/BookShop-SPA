@@ -1,22 +1,15 @@
-import Utils from '../services/Utils.js';
-
-export default class BooksModel {
-    constructor() {
-        this.notifyList = [];
+export default class BookModel {
+    constructor(resourceManager) {
+        this.resourceManager = resourceManager;
         this.books = [];
+        this.getBooks();
     }
 
     async getBooks() {
-        await Utils.getBooks().then((res) => {
-            this.books = res;
+        return await this.resourceManager.getBooks().then((res) => {
+            this.books = res.data;
+
+            return res;
         });
-    }
-
-    addNotify(listener) {
-        this.notifyList.push(listener);
-    }
-
-    notify() {
-        this.notifyList.forEach((listener) => listener.notify());
     }
 }

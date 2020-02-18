@@ -1,31 +1,21 @@
 export default class BookController {
     constructor(model, view) {
         this.model = model;
-        this.model.addNotify(this);
-
         this.view = view;
         
-        document.querySelector('#filter').addEventListener('input', (event) => {
-            this.view.filter = event.target.value;
-            this.update();
+        document.addEventListener('input', (event) => {
+            if(event.target.id == 'filter') {
+                this.view.filter = event.target.value;
+                this.model.resourceManager.notify();
+            }
         });
-
-        document.querySelector('#refresh-books').addEventListener('click', () => {
-            this.refreshAndUpdate();
-        })
-
-        this.refreshAndUpdate();
     }
     
-    update() {
-        this.view.display();
+    async update() {
+        return await this.view.display();
     }
 
     async refreshAndUpdate() {
-        await this.model.getBooks().then(() => this.update());
-    }
-
-    notify() {
-        this.update();
+        return await this.model.getBooks().then((res) => this.update());
     }
 }

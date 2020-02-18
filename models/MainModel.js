@@ -1,22 +1,16 @@
 import BookModel from './BookModel.js';
 import FormModel from './FormModel.js';
+import LogBoxModel from './LogBoxModel.js';
+import KeyModel from './KeyModel.js';
+import ResourceManager from '../services/ResourceManager.js';
 
 export default class MainModel {
     constructor() {
-        this.notifyList = [];
+        this.resourceManager = new ResourceManager();
 
-        this.formModel = new FormModel();
-        this.formModel.addNotify(this);
-        
-        this.bookModel = new BookModel();
-        this.bookModel.addNotify(this);
-    }
-
-    addNotify(listener) {
-        this.notifyList.push(listener);
-    }
-
-    notify() {
-        this.notifyList.forEach((listener) => listener.notify());
+        this.keyModel = new KeyModel(this.resourceManager);
+        this.formModel = new FormModel(this.resourceManager);
+        this.bookModel = new BookModel(this.resourceManager);
+        this.logBoxModel = new LogBoxModel(this.resourceManager);
     }
 }

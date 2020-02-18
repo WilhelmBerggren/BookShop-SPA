@@ -1,14 +1,12 @@
-import Utils from '../services/Utils.js';
-
 export default class FormModel {
-    constructor() {
-        this.notifyList = [];
+    constructor(resourceManager) {
         this.params = {
             op : 'insert',
             id : '',
             title : '',
             author : ''
         }
+        this.resourceManager = resourceManager;
     }
     
     async submitForm(params) {
@@ -17,15 +15,7 @@ export default class FormModel {
                 this.params.key = value;
             }
         }
-        await Utils.submitForm(params);
-        this.notify();
-    }
-
-    addNotify(listener) {
-        this.notifyList.push(listener);
-    }
-
-    notify() {
-        this.notifyList.forEach((listener) => listener.notify());
+        let res = await this.resourceManager.submitForm(params);
+        return res;
     }
 }

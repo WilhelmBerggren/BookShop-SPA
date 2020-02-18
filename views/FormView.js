@@ -4,7 +4,7 @@ export default class FormView {
     }
 
     async display() {
-        document.querySelector('#book-form-container').innerHTML = /*html*/`
+        return /*html*/`
             <h1> Form </h1>
             <form id="bookForm" class="card">
             <div class="row">

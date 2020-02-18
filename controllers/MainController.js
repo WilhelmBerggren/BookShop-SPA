@@ -1,42 +1,32 @@
 import BookController from './BookController.js';
 import FormController from './FormController.js';
-import Utils from '../services/Utils.js';
+import LogBoxController from './KeyController.js';
+import KeyController from './KeyController.js';
 
 export default class MainController {
     constructor(model, view) {
         this.model = model;
-        model.addNotify(this);
-
         this.view = view;
         this.update();
-        
+
+        this.model.resourceManager.addListener(this);
+
         this.bookController = new BookController(model.bookModel, this.view.bookView);
         this.formController = new FormController(model.formModel, this.view.formView);
-        
-        document.addEventListener('submit', (event) => {
-            event.preventDefault();
-            let params = Object.fromEntries(new FormData(event.target).entries());
-            this.model.formModel.submitForm(params).then(() => {
-                this.bookController.refreshAndUpdate();
-            });
-        });
+        this.logBoxController = new LogBoxController(model.logBoxModel, this.view.logBoxView);
+        this.keyBoxController = new KeyController(model.keyModel, this.view.keyView);
 
-        document.querySelector('#refresh-key').addEventListener('click', async (event) => {
-            localStorage.clear();
-            await Utils.getKey().then(() => {
-                this.bookController.refreshAndUpdate();
-            });
+        document.addEventListener('click', async (event) => {
+            if(event.target.id == '#refresh-key') {
+                await this.model.resourceManager.refreshKey();
+            }
+            if(event.target.id == 'refresh-books') {
+                await this.bookController.refreshAndUpdate();
+            }
         });
-
     }
     
-    update() {
-        this.view.display();
-    }
-
-    notify() {
-        this.bookController.notify();
-        this.formController.notify();
-        this.update();
+    async update() {
+        document.querySelector('#main').innerHTML = await this.view.display();
     }
 }
