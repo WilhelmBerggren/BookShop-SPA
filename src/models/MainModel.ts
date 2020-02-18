@@ -5,6 +5,11 @@ import KeyModel from './KeyModel.js';
 import ResourceManager from '../services/ResourceManager.js';
 
 export default class MainModel {
+    resourceManager: ResourceManager;
+    keyModel: KeyModel;
+    formModel: FormModel;
+    bookModel: BookModel;
+    logBoxModel: LogBoxModel;
     constructor() {
         this.resourceManager = new ResourceManager();
 

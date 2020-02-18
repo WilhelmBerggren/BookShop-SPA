@@ -1,5 +1,8 @@
+import KeyModel from '../models/KeyModel.js';
+
 export default class KeyView {
-    constructor(model) {
+    model: KeyModel;
+    constructor(model: KeyModel) {
         this.model = model;
     }
 

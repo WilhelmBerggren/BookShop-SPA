@@ -1,5 +1,9 @@
+import ResourceManager from '../services/ResourceManager.js';
+
 export default class KeyModel {
-    constructor(resourceManager) {
+    resourceManager: ResourceManager;
+    key: string;
+    constructor(resourceManager: ResourceManager) {
         this.key = '';
         this.resourceManager = resourceManager;
     }

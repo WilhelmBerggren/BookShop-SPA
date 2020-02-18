@@ -1,5 +1,8 @@
-export default class FormView {
-    constructor(model) {
+import LogBoxModel from '../models/LogBoxModel.js';
+
+export default class LogBoxView {
+    model: LogBoxModel;
+    constructor(model: LogBoxModel) {
         this.model = model;
     }
 

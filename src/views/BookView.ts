@@ -1,5 +1,9 @@
+import BookModel, { Book } from '../models/BookModel.js';
+
 export default class BookView {
-    constructor(model) {
+    model: BookModel;
+    filter: string;
+    constructor(model: BookModel) {
         this.model = model;
         this.filter = '';
     }
@@ -11,7 +15,7 @@ export default class BookView {
             <input type="text" id="filter" placeholder="filter" value="${this.filter}"">
             <button id="refresh-books">Refresh</button>
             <div class="cards">
-                ${this.model.books.filter(this.bookFilter(this.filter)).map((book) => /*html*/`     
+                ${this.filterBooks(this.filter).map((book) => /*html*/`     
                     <div class='card'>
                         <p>Title: ${book.title}</p>
                         <p>Author: ${book.author}</p>
@@ -24,10 +28,15 @@ export default class BookView {
         `
     }
     
-    bookFilter(filter) {
-        return (book) => {
-            let keys = Object.values(book);
-            return keys.some((val) => (''+val).includes(filter));
+    filterBooks(filter: string): Book[] {
+        let books = [];
+        if(this.model.books) {
+            this.model.books.forEach((book: Book) => {
+                if([book.id, book.title, book.author, book.updated].some((val: string) => (''+val).includes(filter))) {
+                    books.push(book);
+                }
+            })
         }
+        return books;
     }
 }

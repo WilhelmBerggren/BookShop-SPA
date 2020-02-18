@@ -2,9 +2,15 @@ import BookView from './BookView.js';
 import FormView from './FormView.js';
 import LogBoxView from './LogBoxView.js';
 import KeyView from './KeyView.js';
+import MainModel from '../models/MainModel.js';
 
 export default class MainView {
-    constructor(model) {
+    model: MainModel;
+    bookView: BookView;
+    formView: FormView;
+    logBoxView: LogBoxView;
+    keyView: KeyView;
+    constructor(model: MainModel) {
         this.model = model;
         this.bookView = new BookView(model.bookModel);
         this.formView = new FormView(model.formModel);

@@ -1,4 +1,8 @@
+import ResourceManager from '../services/ResourceManager.js';
+
 export default class LogBoxModel {
+    resourceManager: ResourceManager;
+    attempts: any[];
     constructor(resourceManager) {
         this.resourceManager = resourceManager;
         this.attempts = [];
