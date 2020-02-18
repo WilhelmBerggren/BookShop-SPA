@@ -12,7 +12,11 @@ export default class FormModel {
     }
     
     async submitForm(params) {
-        this.params = params;
+        for(let [key, value] of Object.entries(params)) {
+            if(value) {
+                this.params.key = value;
+            }
+        }
         await Utils.submitForm(params);
         this.notify();
     }
