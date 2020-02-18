@@ -1,6 +1,6 @@
-import BookController from './BookController.mjs';
-import FormController from './FormController.mjs';
-import Utils from '../services/Utils.mjs';
+import BookController from './BookController.js';
+import FormController from './FormController.js';
+import Utils from '../services/Utils.js';
 
 export default class MainController {
     constructor(model, view) {

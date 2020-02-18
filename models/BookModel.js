@@ -1,4 +1,4 @@
-import Utils from '../services/Utils.mjs';
+import Utils from '../services/Utils.js';
 
 export default class BooksModel {
     constructor() {

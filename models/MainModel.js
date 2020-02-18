@@ -1,5 +1,5 @@
-import BookModel from './BookModel.mjs';
-import FormModel from './FormModel.mjs';
+import BookModel from './BookModel.js';
+import FormModel from './FormModel.js';
 
 export default class MainModel {
     constructor() {

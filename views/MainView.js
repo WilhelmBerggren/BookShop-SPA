@@ -1,5 +1,5 @@
-import BookView from './BookView.mjs';
-import FormView from './FormView.mjs';
+import BookView from './BookView.js';
+import FormView from './FormView.js';
 
 export default class MainView {
     constructor(model) {
