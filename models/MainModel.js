@@ -1,4 +1,4 @@
-import BooksModel from './BookModel.js/index.js';
+import BookModel from './BookModel.js';
 import FormModel from './FormModel.js';
 
 export default class MainModel {
@@ -8,8 +8,8 @@ export default class MainModel {
         this.formModel = new FormModel();
         this.formModel.addNotify(this);
         
-        this.booksModel = new BooksModel();
-        this.booksModel.addNotify(this);
+        this.bookModel = new BookModel();
+        this.bookModel.addNotify(this);
     }
 
     addNotify(listener) {

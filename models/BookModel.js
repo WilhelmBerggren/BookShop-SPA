@@ -10,7 +10,6 @@ export default class BooksModel {
         await Utils.getBooks().then((res) => {
             this.books = res;
         });
-        this.notify();
     }
 
     addNotify(listener) {

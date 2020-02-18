@@ -1,21 +1,28 @@
-export default class BooksController {
+export default class BookController {
     constructor(model, view) {
         this.model = model;
-        this.model.getBooks();
         this.model.addNotify(this);
 
         this.view = view;
         
-        this.update();
-
         document.querySelector('#filter').addEventListener('input', (event) => {
             this.view.filter = event.target.value;
-            this.view.display();
+            this.update();
         });
+
+        document.querySelector('#refresh-books').addEventListener('click', () => {
+            this.refreshAndUpdate();
+        })
+
+        this.refreshAndUpdate();
     }
     
-    async update() {
+    update() {
         this.view.display();
+    }
+
+    async refreshAndUpdate() {
+        await this.model.getBooks().then(() => this.update());
     }
 
     notify() {

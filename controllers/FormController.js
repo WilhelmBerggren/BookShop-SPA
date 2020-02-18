@@ -12,13 +12,6 @@ export default class FormController {
                 this.model.notify();
             }
         });
-        
-        document.addEventListener('submit', (event) => {
-            event.preventDefault();
-            let params = Object.fromEntries(new FormData(event.target).entries());
-            this.model.submitForm(params);
-            this.model.notify();
-        });
     }
     
     update() {
