@@ -1,10 +1,10 @@
-import KeyModel from '../models/KeyModel.js';
-import KeyView from '../views/KeyView.js';
+import KeyModel from '../models/KeyModel';
+import KeyView from '../views/KeyView';
 
 export default class KeyController {
     model: KeyModel;
     view: KeyView;
-    constructor(model, view) {
+    constructor(model: KeyModel, view: KeyView) {
         this.model = model;
         this.view = view;
     }

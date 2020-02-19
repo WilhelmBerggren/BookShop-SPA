@@ -5,17 +5,20 @@ export default class ResourceManager {
     attempts: any[];
     key: string;
     constructor() {
-        this.listeners = [];
+        this.listeners = <Listener[]>[];
         this.attempts = [];
         this.key = '';
         this.getKey();
     }
 
     async notify() {
-        this.listeners.forEach((listener) => listener.update());
+        this.listeners.forEach((listener) => {
+            console.log("Alerting listener: ", listener);
+            listener.update();
+        });
     }
 
-    async addListener(listener) {
+    async addListener(listener: Listener) {
         this.listeners.push(listener);
     }
 
@@ -57,7 +60,6 @@ export default class ResourceManager {
         this.attempts.push(`${name}: Failed to fetch`);
         this.notify();
         let res = new Response();
-        res['attempt'] = 'Failed to fetch';
         return res;
     }
 
@@ -89,4 +91,8 @@ export interface Params {
     title?: string;
     author?: string;
     key?: string;
+}
+
+interface Listener {
+    update: () => void;
 }

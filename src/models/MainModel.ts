@@ -1,8 +1,8 @@
-import BookModel from './BookModel.js';
-import FormModel from './FormModel.js';
-import LogBoxModel from './LogBoxModel.js';
-import KeyModel from './KeyModel.js';
-import ResourceManager from '../services/ResourceManager.js';
+import BookModel from './BookModel';
+import FormModel from './FormModel';
+import LogBoxModel from './LogBoxModel';
+import KeyModel from './KeyModel';
+import ResourceManager from '../services/ResourceManager';
 
 export default class MainModel {
     resourceManager: ResourceManager;

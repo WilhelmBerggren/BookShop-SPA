@@ -1,4 +1,4 @@
-import KeyModel from '../models/KeyModel.js';
+import KeyModel from '../models/KeyModel';
 
 export default class KeyView {
     model: KeyModel;

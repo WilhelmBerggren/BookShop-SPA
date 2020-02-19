@@ -1,4 +1,4 @@
-import FormModel from '../models/FormModel.js';
+import FormModel from '../models/FormModel';
 
 export default class FormView {
     model: FormModel;

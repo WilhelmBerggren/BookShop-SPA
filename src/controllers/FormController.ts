@@ -1,5 +1,5 @@
 import FormModel from '../models/FormModel';
-import FormView from '../views/FormView.js';
+import FormView from '../views/FormView';
 
 export default class FormController {
     model: FormModel;
@@ -9,8 +9,9 @@ export default class FormController {
         this.view = view;
         
         document.addEventListener('change', (event) => {
-            if(event.target && event.target['id'] == 'op') {
-                this.model.op = event.target['value'];
+            let input = event.target as HTMLInputElement;
+            if(input.id == 'op') {
+                this.model.op = input.value;
                 this.model.resourceManager.notify();
             }
         });
@@ -27,7 +28,6 @@ export default class FormController {
                 title: select('#title'), 
                 author: select('#author'), 
             }
-            console.log("formcontroller submit: ", params);
             await this.model.submitForm(params).then(() => {
                 this.model.resourceManager.notify();
             });

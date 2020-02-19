@@ -1,8 +1,8 @@
-import BookView from './BookView.js';
-import FormView from './FormView.js';
-import LogBoxView from './LogBoxView.js';
-import KeyView from './KeyView.js';
-import MainModel from '../models/MainModel.js';
+import BookView from './BookView';
+import FormView from './FormView';
+import LogBoxView from './LogBoxView';
+import KeyView from './KeyView';
+import MainModel from '../models/MainModel';
 
 export default class MainView {
     model: MainModel;

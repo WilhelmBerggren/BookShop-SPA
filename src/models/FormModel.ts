@@ -1,4 +1,4 @@
-import ResourceManager, { Params } from '../services/ResourceManager.js';
+import ResourceManager, { Params } from '../services/ResourceManager';
 
 export default class FormModel {
     resourceManager: ResourceManager;

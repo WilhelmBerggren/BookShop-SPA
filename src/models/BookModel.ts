@@ -1,4 +1,4 @@
-import ResourceManager from '../services/ResourceManager.js';
+import ResourceManager from '../services/ResourceManager';
 
 export default class BookModel {
     resourceManager: ResourceManager;

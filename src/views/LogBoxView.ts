@@ -1,4 +1,4 @@
-import LogBoxModel from '../models/LogBoxModel.js';
+import LogBoxModel from '../models/LogBoxModel';
 
 export default class LogBoxView {
     model: LogBoxModel;

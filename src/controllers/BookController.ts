@@ -1,16 +1,17 @@
 import BookModel from '../models/BookModel';
-import BookView from '../views/BookView.js';
+import BookView from '../views/BookView';
 
 export default class BookController {
     model: BookModel;
     view: BookView;
-    constructor(model, view) {
+    constructor(model: BookModel, view: BookView) {
         this.model = model;
         this.view = view;
         
         document.addEventListener('input', (event) => {
-            if(event.target['id'] == 'filter') {
-                this.view.filter = event.target['value'];
+            let input = event.target as HTMLInputElement;
+            if(input.id == 'filter') {
+                this.view.filter = input.value;
                 this.model.resourceManager.notify();
             }
         });
