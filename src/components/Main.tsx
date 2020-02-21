@@ -13,17 +13,19 @@ export const Main = () => {
     const [books, setBooks] = useState<Array<IBook>>([]);
 
     const refreshKey = () => { fetchKey().then(res => {
-        setAttempts(attempts.concat(attemptFromResponse('fetchKey', res)));
-        setKey(res.response.key);
+        setAttempts([...attempts, attemptFromResponse('fetchKey', res)]);
+        if(res.response.key)
+            setKey(res.response.key);
     })};
 
     const refreshBooks = () => { fetchBooks(key).then(res => {
-        setAttempts(attempts.concat(attemptFromResponse('fetchBooks', res)));
-        setBooks(res.response.data);
+        setAttempts([...attempts, attemptFromResponse('fetchBooks', res)]);
+        if(res.response.data)
+            setBooks(res.response.data);
     })};
     
     const submitTheForm = (params: Params) => submitForm({'key': key, ...params}).then(res => {
-        setAttempts(attempts.concat(attemptFromResponse('submitForm', res)));
+        setAttempts([...attempts, attemptFromResponse('submitForm', res)]);
         refreshBooks();
     });
     

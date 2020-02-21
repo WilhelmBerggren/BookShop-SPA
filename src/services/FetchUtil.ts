@@ -3,10 +3,12 @@ import { IBook } from "../components/Books";
 
 async function persistentFetch(
     params: Params, 
-    n=10)
+    n=10,
+    prevResponse: BookAPIResponse = null)
     : Promise<{attempts: number, response: BookAPIResponse}> {
-    if(n < 1) 
-        return Promise.resolve({attempts: 10, response: null});
+    if(n < 1) {
+        return Promise.resolve({attempts: 10, response: prevResponse});
+    }
 
     let url = paramsToUrl(params, 'https://www.forverkliga.se/JavaScript/api/crud.php');
     return fetch(url)
@@ -16,7 +18,7 @@ async function persistentFetch(
                 return {attempts: 10-n, response: res}
             }
             else {
-                return persistentFetch(params, n-1);
+                return persistentFetch(params, n-1, prevResponse=res);
             }
         });
 }
