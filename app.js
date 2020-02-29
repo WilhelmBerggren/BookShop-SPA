@@ -3,43 +3,70 @@
 handleOpChange();
 displayBooks();
 
-document.querySelector('#filter').addEventListener('input', filterBooks);
+document.querySelector('#get-key').addEventListener('click', refreshKey);
+document.querySelector('#get-books').addEventListener('click', displayBooks);
 document.querySelector('#op').addEventListener('change', handleOpChange);
-document.querySelector('#bookForm').addEventListener('submit', submitForm);
+document.querySelector('#filter').addEventListener('input', displayBooks);
+document.querySelector('#book-form').addEventListener('submit', submitForm);
+
+async function refreshKey() {
+    window.localStorage.removeItem('key');
+    return await getKey().then(() => displayBooks());
+}
+
+async function getKey() {
+    let key = window.localStorage.getItem('key');
+    if(key == null) {
+        await persistentFetch('?requestKey').then((res) => {
+            console.log("setting key to: ", res.key);
+            window.localStorage.setItem('key', res.key);
+        });
+    }
+    
+    key = window.localStorage.getItem('key');
+    document.querySelector('#key').innerHTML = `<p>Key: ${key || 'not set'}</p>`
+    return key;
+}
 
 function handleOpChange() {
-    const fields = {
-        id: '#id-row', 
-        title: '#title-row', 
-        author: '#author-row'
-    }
-    const opHides = {
-        insert: [fields.id], 
-        update: [], 
-        delete: [fields.title, fields.author]
-    }
+    let value = document.querySelector('#op').value;
     const setDisplay = (id, value) => document.querySelector(id).style.display = value;
-    Object.values(fields).map((row) => setDisplay(row, ''));
-    opHides[document.querySelector('#op').value].map((row) => setDisplay(row, 'none'));
+
+    if(value == 'insert') {
+        setDisplay('#id', 'none');
+        setDisplay('#title', '');
+        setDisplay('#author', '');
+    }
+    else if(value == 'delete') {
+        setDisplay('#id', '');
+        setDisplay('#title', 'none');
+        setDisplay('#author', 'none');
+    }
+    else if(value == 'update') {
+        setDisplay('#id', '');
+        setDisplay('#title', '');
+        setDisplay('#author', '');
+    }
 }
 
 async function submitForm(event) {
     event.preventDefault();
-    await myFetch(Object.fromEntries(new FormData(event.target).entries()));
-    displayBooks();
+    const val = (id) => document.querySelector(id).value;
+    const params = (key, op, id, title, author) => `?key=${key}&op=${op}&id=${id}&title=${title}&author=${author}`
+
+    await getKey().then(key => 
+        persistentFetch(params(key, val('#op'), val('#id'), val('#title'), val('#author'))))
+        .then(() => displayBooks());
 }
 
-async function filterBooks(event) {
-    await displayBooks((book) => {
-        let keys = Object.values(book);
-        let some = keys.some((val) => (''+val).includes(event.target.value));
-        return some;
-    });
-}
+async function displayBooks() {
+    let f = document.querySelector('#filter').value;
+    let filter = (book) => Object.values(book).some(val => ('' + val).includes(f));
 
-async function displayBooks(filter = (b) => b) {
-    await myFetch({op: 'select'}).then(res => {
-        document.querySelector('#books').innerHTML = res.data.filter(filter).map((book) => `
+    await getKey().then((key) => {
+        console.log("key: ", key);
+        persistentFetch(`?key=${key}&op=select`).then((res) => {
+            document.querySelector('#books').innerHTML = res.data.filter(filter).map((book) => `
             <div class='card'>
                 <p>Title: ${book.title}</p>
                 <p>Author: ${book.author}</p>
@@ -47,33 +74,18 @@ async function displayBooks(filter = (b) => b) {
                 <p>Updated: ${book.updated}</p>
             </div>
         `).join('');
+        });
     });
 }
 
-async function myFetch(params, useKey = true) {
-    if(useKey) params.key = await getKey();
-    let url = new URL('https://www.forverkliga.se/JavaScript/api/crud.php');
-    Object.entries(params).forEach(([key, value]) => url.searchParams.append(key, value));
-    return await persistentFetch(url);
-}
-
-async function persistentFetch(url, n = 10) {
+async function persistentFetch(params, n = 10) {
+    let url = 'https://www.forverkliga.se/JavaScript/api/crud.php' + params;
     if(n <= 0) return {data: []};
     let json = await fetch(url).then(res => res.json());
     if (json.status == "success") {
-        document.querySelector('#attempts').innerHTML += `<p>Success: ${11 - n}</p>`;
+        console.log(json);
+        document.querySelector('#attempts').innerHTML += `<p>GET (${n}): ${params}</p>`;
         return json;
     } 
-    else return persistentFetch(url, n-1);
-}
-
-async function getKey(refreshKey = false) {
-    if(window.localStorage.getItem('key') == null || refreshKey == true) {
-        await myFetch({'requestKey': true}, false).then((k) => 
-            window.localStorage.setItem('key', k.key)
-        );
-    }
-    let key = window.localStorage.getItem('key');
-    document.querySelector('#key').innerHTML = key;
-    return key;
+    else return persistentFetch(params, n-1);
 }

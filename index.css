@@ -4,21 +4,9 @@ body {
     padding: 0;
 }
 
-nav {
-    margin: 0;
-    padding: .5em;
-}
-
-nav > * {
-    color: inherit;
-    font-size: 3em;
-    font-style: bold;
-    font-weight: bold;
-    text-decoration: none;
-}
-
 .cards {
     display: flex;
+    width: 100%;
     flex-wrap: wrap;
 }
 
