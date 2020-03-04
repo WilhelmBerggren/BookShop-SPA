@@ -31,21 +31,16 @@ async function getKey() {
 function handleOpChange() {
     let value = document.querySelector('#op').value;
     const setDisplay = (id, value) => document.querySelector(id).style.display = value;
-
+    
+    //display all
+    ['#id', '#title', '#author'].map(id => setDisplay(id, ''));
+    
     if(value == 'insert') {
         setDisplay('#id', 'none');
-        setDisplay('#title', '');
-        setDisplay('#author', '');
     }
     else if(value == 'delete') {
-        setDisplay('#id', '');
         setDisplay('#title', 'none');
         setDisplay('#author', 'none');
-    }
-    else if(value == 'update') {
-        setDisplay('#id', '');
-        setDisplay('#title', '');
-        setDisplay('#author', '');
     }
 }
 
