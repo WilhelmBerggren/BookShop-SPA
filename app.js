@@ -1,13 +1,33 @@
 'use strict';
 
-handleOpChange();
-displayBooks();
+window.onload = () => {
+    console.log("loaded");
+    handleOpChange();
+    displayBooks();
+    
+    document.querySelector('#get-key').addEventListener('click', refreshKey);
+    document.querySelector('#get-books').addEventListener('click', displayBooks);
+    document.querySelector('#op').addEventListener('change', handleOpChange);
+    document.querySelector('#filter').addEventListener('input', displayBooks);
+    document.querySelector('#book-form').addEventListener('submit', submitForm);
+};
 
-document.querySelector('#get-key').addEventListener('click', refreshKey);
-document.querySelector('#get-books').addEventListener('click', displayBooks);
-document.querySelector('#op').addEventListener('change', handleOpChange);
-document.querySelector('#filter').addEventListener('input', displayBooks);
-document.querySelector('#book-form').addEventListener('submit', submitForm);
+function renderTable(books) {
+    document.querySelector('#books').innerHTML = /*html*/`<table>
+        <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Updated</th>
+        </tr>
+        ${books.map(book => /*html*/`<tr>
+            <td>${book.id}</td>
+            <td>${book.title}</td>
+            <td>${book.author}</td>
+            <td>${book.updated}</td>
+        </tr>`).join('')}
+    </table>`
+}
 
 async function refreshKey() {
     window.localStorage.removeItem('key');
@@ -17,14 +37,13 @@ async function refreshKey() {
 async function getKey() {
     let key = window.localStorage.getItem('key');
     if(key == null) {
-        await persistentFetch('?requestKey').then((res) => {
-            console.log("setting key to: ", res.key);
+        await fetchAndLog('?requestKey').then((res) => {
             window.localStorage.setItem('key', res.key);
         });
     }
     
     key = window.localStorage.getItem('key');
-    document.querySelector('#key').innerHTML = `<p>Key: ${key || 'not set'}</p>`
+    document.querySelector('#key').innerHTML = key || 'not set';
     return key;
 }
 
@@ -46,11 +65,11 @@ function handleOpChange() {
 
 async function submitForm(event) {
     event.preventDefault();
-    const val = (id) => document.querySelector(id).value;
+    const val = (id) => document.getElementById(id).value;
     const params = (key, op, id, title, author) => `?key=${key}&op=${op}&id=${id}&title=${title}&author=${author}`
 
     await getKey().then(key => 
-        persistentFetch(params(key, val('#op'), val('#id'), val('#title'), val('#author'))))
+        fetchAndLog(params(key, val('op'), val('id'), val('title'), val('author'))))
         .then(() => displayBooks());
 }
 
@@ -59,28 +78,29 @@ async function displayBooks() {
     let filter = (book) => Object.values(book).some(val => ('' + val).includes(f));
 
     await getKey().then((key) => {
-        console.log("key: ", key);
-        persistentFetch(`?key=${key}&op=select`).then((res) => {
-            document.querySelector('#books').innerHTML = res.data.filter(filter).map((book) => `
-            <div class='card'>
-                <p>Title: ${book.title}</p>
-                <p>Author: ${book.author}</p>
-                <p>ID: ${book.id}</p>
-                <p>Updated: ${book.updated}</p>
-            </div>
-        `).join('');
+        fetchAndLog(`?key=${key}&op=select`).then((res) => {
+            if(res.data) renderTable(res.data.filter(filter));
         });
+    });
+}
+
+async function fetchAndLog(params) {
+    let row = (ar) => /*html*/`<tr>${ar.map(item => `<td>${item}</td>`).join('')}</tr>`;
+    return await persistentFetch(params).then(res => {
+        document.querySelector('#attempts').innerHTML += row([res.attempts, (res.message || params)]);
+        return res;
     });
 }
 
 async function persistentFetch(params, n = 10) {
     let url = 'https://www.forverkliga.se/JavaScript/api/crud.php' + params;
-    if(n <= 0) return {data: []};
-    let json = await fetch(url).then(res => res.json());
-    if (json.status == "success") {
-        console.log(json);
-        document.querySelector('#attempts').innerHTML += `<p>GET (${n}): ${params}</p>`;
-        return json;
-    } 
-    else return persistentFetch(params, n-1);
+    while(n > 0) {
+        n--;
+        let json = await fetch(url).then(res => res.json());
+        if (json.status == "success") {
+            json.attempts = 10 - n;
+            return json;
+        }
+    }
+    return {attempts: n, message: "Max attempts reached"};
 }
